@@ -25,3 +25,13 @@
     (map (fn [volcano-data]
            (zipmap header-lines volcano-data))
          volcano-datas)))
+
+(defn parse-numbers [volcano]
+  (-> volcano
+      (update :elevation-meter #(Integer/parseInt %))
+      (update :longitude #(Double/parseDouble %))
+      (update :latitude #(Double/parseDouble %))))
+
+(def volcano-parsed
+  (map parse-numbers volcanos-records))
+
