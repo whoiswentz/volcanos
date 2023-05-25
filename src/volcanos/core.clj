@@ -2,8 +2,19 @@
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]))
 
+(def csv-file
+  (-> "volcanos.csv"
+      io/resource
+      io/reader))
+
+(defn parse-numbers [volcano]
+  (-> volcano
+      (update :elevation-meter #(Integer/parseInt %))
+      (update :longitude #(Double/parseDouble %))
+      (update :latitude #(Double/parseDouble %))))
+
 (def csv-lines
-  (with-open [csv (io/reader "/Users/vinicioswentz/Downloads/v.csv")]
+  (with-open [csv csv-file]
     (doall
       (csv/read-csv csv))))
 
@@ -25,12 +36,6 @@
     (map (fn [volcano-data]
            (zipmap header-lines volcano-data))
          volcano-datas)))
-
-(defn parse-numbers [volcano]
-  (-> volcano
-      (update :elevation-meter #(Integer/parseInt %))
-      (update :longitude #(Double/parseDouble %))
-      (update :latitude #(Double/parseDouble %))))
 
 (def volcano-parsed
   (map parse-numbers volcanos-records))
