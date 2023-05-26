@@ -13,6 +13,9 @@
       (update :longitude #(Double/parseDouble %))
       (update :latitude #(Double/parseDouble %))))
 
+(defn parse-date [volcanos]
+  true)
+
 (def csv-lines
   (with-open [csv csv-file]
     (doall
